@@ -1,0 +1,19 @@
+<% include partials/header.ejs %>
+    <div class="container post">
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 post-title">
+                <h1 class="text-center">Sign-up </h1>
+                                <% if (typeof errorr !== 'undefined'){ %>
+                                <div class="alert alert-warning text-center" role="alert"><span><%= errorr %></span></div>
+                                <% } %>
+                <form action="signup" method="post">
+                    <input class="form-control" type="text" name="username" required="true" placeholder="Username" autofocus="true">
+                    <input class="form-control" type="password" name="password" required="true" placeholder="Password">
+                    <button class="btn btn-success btn-block" type="submit">Button</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>var d = document.getElementById("signup");
+d.className += "active";</script>
+<% include partials/footer.ejs %>

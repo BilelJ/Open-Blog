@@ -1,0 +1,61 @@
+<% include partials/header.ejs %>
+    <div class="container post">
+        <div class="row">
+            
+            <% post.forEach(function(post){ %>
+            <div class="col-md-12 col-md-offset-0 post-title">
+                <h1 class="text-center"><%= post.title %></h1>
+                <p class="author"><strong><%= post.author.username %></strong> <span class="text-muted"><%= post.date.toDateString() %> </span></p>
+            <% if (currentUser && post.author.id.equals(currentUser._id)){ %>
+                <form action="/post/<%= post._id %>?_method=delete" method="post">
+                <a href="/post/<%= post._id %>/edit"><i title="Edit" class="btn btn-success btn-sm glyphicon glyphicon-pencil"></i></a>
+                <button class="btn btn-danger btn-sm glyphicon glyphicon-remove" title="Remove"></button>
+                </form>
+            <% }  %>
+            </div>
+            <div class="col-lg-10 col-lg-offset-1 col-md-12 col-md-offset-0 post-body">
+                <figure><img class="img-thumbnail" src="<%= post.image %>">
+                    <figcaption><%= post.title %></figcaption>
+                </figure>
+                <p><%- post.body.slice(0,300) %>...</p><a class="btn btn-success text-uppercase" href="/post/<%= post._id %>">Read more</a></div>                
+                    <% }) %>
+        </div>
+    </div>
+<div class="container text-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination justify-content-center">
+          <% if (currentPage === 1){ %>
+            <li class="page-item disabled">
+              <a class="page-link" tabindex="-1">Previous</a>
+            </li>
+         <% } else { %>
+            <li class="page-item">
+              <a class="page-link" href="/page/<%= currentPage - 1 %>" tabindex="-1">Previous</a>
+            </li> 
+         <% } %>
+             <li class="page-item <% if (currentPage == 1){%> active <% } %>"><a class="page-link" href="/">1</a></li>
+         <% for(var i=2; i<=lastPage; i++){ %>
+               <% if((i<=5 || i>= lastPage-3)&& i!==currentPage){ %>
+            <li class="page-item"><a class="page-link" href="/page/<%= i %>"><%= i %></a></li>
+               <% } %>
+               <% if (i==currentPage){ %>
+            <li class="page-item active"><a class="page-link"><%= i %></a></li>
+               <% } %>
+               <% if(lastPage>12 && (i==lastPage-4 || i == lastPage-5)){ %>
+                    <li class="page-item"><a class="page-link">..</a></li>
+               <% } %>
+         <% } %>
+         
+
+        <% if (currentPage == lastPage){ %>
+            <li class="page-item disabled">
+          <a class="page-link">Next</a>
+        <% } else { %>
+            <li class="page-item">
+          <a class="page-link" href="/page/<%= currentPage + 1 %>">Next</a>
+        <% } %>
+    </li>
+  </ul>
+    </nav>
+</div>
+<% include partials/footer.ejs %>

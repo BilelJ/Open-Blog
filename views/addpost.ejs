@@ -1,0 +1,23 @@
+<% include partials/header.ejs %>
+<script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+
+    <div class="container">
+        <form action="/" method="post">
+            <h1 class="text-center">Add a new post</h1>
+            <h4>Title </h4>
+            <input class="form-control" type="text" placeholder="Your title here" name="post[title]" required="true">
+            <h4>Image</h4>
+            <input class="form-control" type="url" placeholder="The image URL here" name="post[image]" required="true">
+            <h4>Body </h4>
+            <textarea class="form-control" rows="6" placeholder="Your post here" name="post[body]" id="addpost"></textarea>
+            <button class="btn btn-success btn-block" type="submit">Submit </button>
+        </form>
+        <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'addpost' );
+        </script>
+    </div>
+    <script>var d = document.getElementById("new");
+d.className += " active";</script>
+<% include partials/footer.ejs %>

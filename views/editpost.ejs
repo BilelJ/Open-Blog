@@ -1,0 +1,20 @@
+<% include partials/header.ejs %>
+<script src="https://cdn.ckeditor.com/4.7.3/standard/ckeditor.js"></script>
+    <div class="container">
+        <form action="/post/<%= post._id %>?_method=put" method="post">
+            <h1 class="text-center">Edit your post</h1>
+            <h4>Title </h4>
+            <input class="form-control" type="text" name="post[title]" placeholder="Your title here" value="<%= post.title %>" required="true">
+            <h4>Image</h4>
+            <input class="form-control" type="url" name="post[image]" placeholder="The image URL here" value="<%= post.image %>" required="true">
+            <h4>Body </h4>
+            <textarea class="form-control" rows="6" name="post[body]" placeholder="Your post here" id="editpost" required="true"><%= post.body %></textarea>
+            <button class="btn btn-success btn-block" type="submit">Submit </button>
+        </form>
+        <script>
+                // Replace the <textarea id="editor1"> with a CKEditor
+                // instance, using default configuration.
+                CKEDITOR.replace( 'editpost' );
+        </script>
+    </div>
+<% include partials/footer.ejs %>
