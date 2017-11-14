@@ -17,6 +17,7 @@ router.post("/post/:id/comment/", isLoggedIn, commentNoEmpty, function(req, res)
 					console.log(err);
 					req.flash("error", "Cannot add your comment, please try again");
 				} else {
+					req.flash("success", "Comment added successfully");
 					newComment.author.id = req.user._id;
 					newComment.author.username = req.user.username;
 					newComment.save();
@@ -24,7 +25,6 @@ router.post("/post/:id/comment/", isLoggedIn, commentNoEmpty, function(req, res)
 					post.save();
 				}
 			});
-			req.flash("success", "Comment added successfully");
 		}
 	});
 	res.redirect('/post/' + req.params.id);

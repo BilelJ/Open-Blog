@@ -51,7 +51,6 @@ router.post("/", isLoggedIn, postNoEmptyField, function(req, res) {
 	var newPost 	= req.body.post;
 	newPost.body	= req.sanitize(newPost.body);
 	newPost.author	= {"username":  req.user.username, "id" :  req.user._id};
-	console.log(newPost);
 	Post.create(newPost, function(err,post){
 		if(err){
 			console.log(err);
