@@ -46,8 +46,7 @@
                <% } %>
          <% } %>
          
-
-        <% if (currentPage == lastPage){ %>
+        <% if (currentPage == lastPage || lastPage == 0 || lastPage == 1){ %>
             <li class="page-item disabled">
           <a class="page-link">Next</a>
         <% } else { %>

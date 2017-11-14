@@ -55,9 +55,10 @@ router.post("/", isLoggedIn, postNoEmptyField, function(req, res) {
 	Post.create(newPost, function(err,post){
 		if(err){
 			console.log(err);
-			res.redirect("/new");
+			req.flash("error","An error occured, please try again");
+			res.redirect("back");
 		} else{
-			console.log(post);
+			req.flash("success","Post published successfully!");
 			res.redirect("/");
 		}
 	});
@@ -72,6 +73,7 @@ router.get("/post/:id", function(req, res) {
 	Post.findById(req.params.id).populate("comments").exec(function(err, post) {
 		if (err) {
 			console.log(err)
+			req.flash("error","An error occured, please try again!");
 			res.redirect("/");
 		} else {
 			res.render("post.ejs", {
@@ -87,6 +89,7 @@ router.get("/post/:id/edit", checkPostOwner, function(req, res) {
 	Post.findById(req.params.id, function(err, post) {
 			if (err) {
 				console.log(err);
+				req.flash("error","An error occured, please try again!");
 				res.redirect("/post/"+req.params.id);
 			} else {
 				res.render("editpost.ejs", {post: post});
@@ -100,6 +103,7 @@ router.put("/post/:id", checkPostOwner, postNoEmptyField,  function(req, res) {
 	Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, post) {
 		if (err) {
 			console.log(err);
+			req.flash("error","Error updating your post, please try again!");
 			res.redirect("back")
 		} else {
 			res.redirect("/post/" + req.params.id);
@@ -112,6 +116,7 @@ router.delete("/post/:id", checkPostOwner, function(req, res){
 	Post.findByIdAndRemove(req.params.id, function(err){
 		if(err){
 			console.log(err);
+			req.flash("error","This post couldn't be deleted, please try again!");
 			res.redirect("back");
 		} else {
 			req.flash("success","Post successfully deleted");
