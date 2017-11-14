@@ -21,7 +21,8 @@ var     postRoutes            = require("./routes/posts"),
         indexRoutes           = require("./routes/index");
         //###############################
         
-mongoose.connect("mongodb://localhost/blog_v2",  {useMongoClient: true});
+//mongoose.connect("mongodb://localhost/blog_v2",  {useMongoClient: true});
+mongoose.connect("mongodb://blogfornode:nodeme@ds261745.mlab.com:61745/nodeblogdb",  {useMongoClient: true});
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
