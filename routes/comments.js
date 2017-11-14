@@ -5,12 +5,13 @@ var     Post            = require("../models/post"),
         Comment         = require("../models/comment");
         
 //Add a comment route
-router.post("/post/:id/comment/", isLoggedIn, function(req, res) {
+router.post("/post/:id/comment/", isLoggedIn, commentNoEmpty, function(req, res) {
 	Post.findById(req.params.id, function(err, post) {
 		if (err) {
 			console.log(err);
 			req.flash("error", "Cannot add your comment, please try again");
 		} else {
+			req.body.comment.text = req.sanitize(req.body.comment.text);
 			Comment.create(req.body.comment, function(err, newComment) {
 				if (err) {
 					console.log(err);
@@ -65,7 +66,7 @@ function checkCommenttOwner(req, res, next){
 		    	res.redirect("back");
 		    } else{
 		    	if(comment.author.id.equals(req.user.id)){
-		    		next();
+		    		return next();
 		    	} else {
 		    		res.redirect("back");
 		    	}
@@ -74,6 +75,15 @@ function checkCommenttOwner(req, res, next){
 	} else{
 		req.flash("error", "You must be logged in to access this page!");
 		res.redirect("/login");
+	}
+}
+
+function commentNoEmpty(req,res,next){
+	if (req.body.comment.text === "" ){
+		req.flash("error","You cannot send an empty comment, try again");
+		res.redirect("back");
+	} else {
+		return next();
 	}
 }
 

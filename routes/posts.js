@@ -16,7 +16,7 @@ router.get("/", function(req, res) {
 					res.render("index.ejs", {
 						post: post,
 						currentPage: 1,
-						lastPage: Math.floor(count/5)+1
+						lastPage: Math.ceil(count/5)
 					});
 				}
 			});
@@ -38,7 +38,7 @@ router.get("/page/:currentPage",isValidPageNumber, function(req, res) {
 					res.render("index.ejs", {
 						post: post,
 						currentPage: currentPage,
-						lastPage: Math.floor(count/5)+1
+						lastPage: Math.ceil(count/5)
 					});
 				}
 			});
@@ -47,9 +47,10 @@ router.get("/page/:currentPage",isValidPageNumber, function(req, res) {
 });
 
 //Blog add post route
-router.post("/", isLoggedIn, function(req, res) {
-	var newPost = req.body.post;
-	newPost.author= {"username":  req.user.username, "id" :  req.user._id};
+router.post("/", isLoggedIn, postNoEmptyField, function(req, res) {
+	var newPost 	= req.body.post;
+	newPost.body	= req.sanitize(newPost.body);
+	newPost.author	= {"username":  req.user.username, "id" :  req.user._id};
 	console.log(newPost);
 	Post.create(newPost, function(err,post){
 		if(err){
@@ -94,7 +95,8 @@ router.get("/post/:id/edit", checkPostOwner, function(req, res) {
 });
 
 //Update post route
-router.put("/post/:id", checkPostOwner, function(req, res) {
+router.put("/post/:id", checkPostOwner, postNoEmptyField,  function(req, res) {
+	req.body.post.body = req.sanitize(req.body.post.body);
 	Post.findByIdAndUpdate(req.params.id, req.body.post, function(err, post) {
 		if (err) {
 			console.log(err);
@@ -112,7 +114,8 @@ router.delete("/post/:id", checkPostOwner, function(req, res){
 			console.log(err);
 			res.redirect("back");
 		} else {
-			res.redirect("back");
+			req.flash("success","Post successfully deleted");
+			res.redirect("/");
 		}
 	});
 		
@@ -160,5 +163,15 @@ function checkPostOwner(req, res, next){
 		res.redirect("/login");
 	}
 }
+
+function postNoEmptyField(req,res,next){
+	if (req.body.post.title === "" || req.body.post.image === "" || req.body.post.body === ""){
+		req.flash("error","You must fill all the required fields, try again");
+		res.redirect("back");
+	} else {
+		return next();
+	}
+}
+
 
 module.exports = router;

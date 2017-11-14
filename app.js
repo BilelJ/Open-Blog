@@ -4,6 +4,7 @@ var     express         = require("express"),
         flash           = require("connect-flash"),
         ejs             = require("ejs"),
         bodyParser      = require("body-parser"),
+        expressSanitizer= require("express-sanitizer"),
         methodOverride  = require("method-override"),
         passport        = require("passport"),
         localStrategy   = require("passport-local");
@@ -24,6 +25,7 @@ mongoose.connect("mongodb://localhost/blog_v2",  {useMongoClient: true});
 
 app.use(express.static('public'));
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressSanitizer());
 app.use(methodOverride("_method"));
 app.use(flash());
 

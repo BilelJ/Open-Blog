@@ -36,7 +36,7 @@
                 <h4 class="text-success">Add a comment</h4>
                 <form action= "/post/<%= post._id %>/comment/" method="POST">
                     <h5>Comment </h5>
-                    <textarea class="form-control" cols="40" name="comment[text]" placeholder="Your comment"></textarea>
+                    <textarea class="form-control" cols="40" name="comment[text]" placeholder="Your comment" required="true"></textarea>
                     <button class="btn btn-success btn-block" type="submit">Submit</button>
                 </form>
                 <% } %>
